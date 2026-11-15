@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
-
+// Legyszives ne toroljetek ki meg egyszer egesz projecktett koszi :)
 namespace Autokolcsonzo
 {
 
