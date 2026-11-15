@@ -1,0 +1,152 @@
+﻿<Window x:Class="Autokolcsonzo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Autókölcsönző Rendszer - Főablak" Height="600" Width="950"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing" Background="#FF00BFFF">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Felhasználó adatai-->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock x:Name="tbBelepveInfo" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button Content="Kijelentkezés" Click="btnKijelentkezes_Click" HorizontalAlignment="Right" Padding="10,4"/>
+        </DockPanel>
+
+        <TabControl x:Name="tcFoMenu" Grid.Row="1">
+            <!-- Autók listázása, kezelése -->
+            <TabItem x:Name="tabAutok" Header="Autók űrlap (Keresés)">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Margin="0,0,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!-- Keresés az autóknál -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Keresés (márka/rendszám):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox x:Name="tbAutoKereses" Width="180" TextChanged="tbAutoKereses_TextChanged"/>
+                        </StackPanel>
+                        <DataGrid x:Name="dgAutok" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                                  SelectionChanged="dgAutok_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
+                                <DataGridTextColumn Header="Rendszám" Binding="{Binding Rendszam}" Width="90"/>
+                                <DataGridTextColumn Header="Márka és típus" Binding="{Binding MarkaTipus}" Width="*"/>
+                                <DataGridTextColumn Header="Kategória" Binding="{Binding Kategoria}" Width="90"/>
+                                <DataGridTextColumn Header="Napi díj (Ft)" Binding="{Binding NapiDij}" Width="90"/>
+                                <DataGridCheckBoxColumn Header="Elérhető" Binding="{Binding Elerheto}" Width="65"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <StackPanel x:Name="spAutoSzerkeszto" Grid.Column="1">
+                        <TextBlock Text="Rendszám:"/>
+                        <TextBox x:Name="tbRendszam" Margin="0,2,0,8"/>
+                        <TextBlock Text="Márka és típus:"/>
+                        <TextBox x:Name="tbMarka" Margin="0,2,0,8"/>
+                        <TextBlock Text="Kategória:"/>
+                        <ComboBox x:Name="cbKategoria" Margin="0,2,0,8" SelectedIndex="0">
+                            <ComboBoxItem Content="Személyautó"/>
+                            <ComboBoxItem Content="SUV"/>
+                            <ComboBoxItem Content="Kisbusz"/>
+                        </ComboBox>
+                        <TextBlock Text="Napi díj (Ft):"/>
+                        <TextBox x:Name="tbNapiDij" Margin="0,2,0,8"/>
+                        <CheckBox x:Name="chkElerheto" Content="Jelenleg elérhető" IsChecked="True" Margin="0,0,0,12"/>
+                        <Button Content="Új autó felvitele (Create)" Click="btnAutoHozzaad_Click" Margin="0,0,0,6" Padding="5"/>
+                        <Button Content="Kijelölt módosítása (Update)" Click="btnAutoModosit_Click" Margin="0,0,0,6" Padding="5"/>
+                        <Button x:Name="btnAutoTorol" Content="Kijelölt törlése (Delete)" Click="btnAutoTorol_Click" Padding="5"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Ügyfelek kezelése -->
+            <TabItem x:Name="tabUgyfelek" Header="Ügyfelek űrlap ( Keresés)">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Margin="0,0,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!-- Keresés az ügyfeleknél -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="Keresés (ügyfél neve):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox x:Name="tbUgyfelKereses" Width="180" TextChanged="tbUgyfelKereses_TextChanged"/>
+                        </StackPanel>
+                        <DataGrid x:Name="dgUgyfelek" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                                  SelectionChanged="dgUgyfelek_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
+                                <DataGridTextColumn Header="Név" Binding="{Binding Nev}" Width="*"/>
+                                <DataGridTextColumn Header="Jogosítvány" Binding="{Binding JogosimvanySzam}" Width="110"/>
+                                <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}" Width="110"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Ügyfél neve:"/>
+                        <TextBox x:Name="tbUgyfelNev" Margin="0,2,0,8"/>
+                        <TextBlock Text="Jogosítvány szám:"/>
+                        <TextBox x:Name="tbJogsi" Margin="0,2,0,8"/>
+                        <TextBlock Text="Telefonszám:"/>
+                        <TextBox x:Name="tbTelefon" Margin="0,2,0,12"/>
+                        <Button Content="Új ügyfél felvitele" Click="btnUgyfelHozzaad_Click" Margin="0,0,0,6" Padding="5"/>
+                        <Button Content="Ügyfél módosítása" Click="btnUgyfelModosit_Click" Margin="0,0,0,6" Padding="5"/>
+                        <Button Content="Ügyfél törlése" Click="btnUgyfelTorol_Click" Padding="5"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Adatok összegzése -->
+            <TabItem x:Name="tabKolcsonzesek" Header="Összes adat és Kölcsönzések">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Elérhető autó:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="cbKolcsonAuto" Width="220" Margin="0,0,15,0"/>
+                        <TextBlock Text="Ügyfél:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="cbKolcsonUgyfel" Width="200" Margin="0,0,15,0"/>
+                        <Button Content="Kölcsönzés indítása" Click="btnKolcsonzesIndit_Click" Padding="8,4"/>
+                    </StackPanel>
+
+                    <!-- Adatok összegzése egy táblázatban  -->
+                    <DataGrid x:Name="dgKolcsonzesek" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="35"/>
+                            <DataGridTextColumn Header="Rendszám" Binding="{Binding Auto.Rendszam}" Width="80"/>
+                            <DataGridTextColumn Header="Autó típusa" Binding="{Binding Auto.MarkaTipus}" Width="*"/>
+                            <DataGridTextColumn Header="Kategória" Binding="{Binding Auto.Kategoria}" Width="80"/>
+                            <DataGridTextColumn Header="Napi díj" Binding="{Binding Auto.NapiDij}" Width="65"/>
+                            <DataGridTextColumn Header="Ügyfél neve" Binding="{Binding Ugyfel.Nev}" Width="120"/>
+                            <DataGridTextColumn Header="Jogosítvány" Binding="{Binding Ugyfel.JogosimvanySzam}" Width="85"/>
+                            <DataGridTextColumn Header="Telefon" Binding="{Binding Ugyfel.Telefon}" Width="90"/>
+                            <DataGridTextColumn Header="Kezdete" Binding="{Binding Kezdete, StringFormat=yyyy.MM.dd}" Width="75"/>
+                            <DataGridTextColumn Header="Vége" Binding="{Binding Vege, StringFormat=yyyy.MM.dd}" Width="75"/>
+                            <DataGridTextColumn Header="Fizetendő" Binding="{Binding FizetendoOsszeg}" Width="75"/>
+                            <DataGridTextColumn Header="Állapot" Binding="{Binding Allapot}" Width="60"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <DockPanel Grid.Row="2" Margin="0,10,0,0">
+                        <Button Content="Kijelölt autó visszavétele és Számlázás" Click="btnVisszavetel_Click" Padding="10,5"/>
+                        <TextBlock x:Name="tbStatisztika" FontWeight="Bold" FontSize="14" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
